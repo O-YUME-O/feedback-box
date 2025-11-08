@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>提交反馈 · 功能建议箱</title>
+    <style>
+        /* GitHub风格复刻 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #f6f8fa;
+            color: #24292e;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 24px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .page-title svg {
+            color: #2eaadc;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #24292e;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #0366d6;
+            box-shadow: 0 0 0 3px rgba(3,102,214,0.3);
+        }
+        textarea.form-control {
+            min-height: 180px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        .type-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .type-btn {
+            padding: 8px 16px;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            background: #f6f8fa;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .type-btn.active {
+            background: #0366d6;
+            color: #fff;
+            border-color: #0366d6;
+        }
+        .labels-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .label-tag {
+            padding: 4px 8px;
+            background: #f1f8ff;
+            color: #0366d6;
+            border-radius: 2em;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .label-tag.active {
+            background: #0366d6;
+            color: #fff;
+        }
+        .attachment-upload {
+            border: 2px dashed #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .attachment-upload:hover {
+            border-color: #0366d6;
+        }
+        .attachment-upload input {
+            display: none;
+        }
+        .submit-btn {
+            background: #2eaadc;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .submit-btn:hover {
+            background: #1a9cb7;
+        }
+        .success-alert {
+            margin-top: 20px;
+            padding: 12px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            提交反馈/新功能建议
+        </h1>
+
+        <form id="feedbackForm">
+            <!-- 反馈类型 -->
+            <div class="form-group">
+                <label>反馈类型</label>
+                <div class="type-selector">
+                    <div class="type-btn active" data-type="feature">新功能建议</div>
+                    <div class="type-btn" data-type="bug">BUG反馈</div>
+                    <div class="type-btn" data-type="optimize">体验优化</div>
+                    <div class="type-btn" data-type="other">其他</div>
+                </div>
+            </div>
+
+            <!-- 标题 -->
+            <div class="form-group">
+                <label for="title">标题 <span style="color: #d73a49;">*</span></label>
+                <input type="text" id="title" class="form-control" placeholder="简洁描述你的反馈（如：建议新增深色模式）" required>
+            </div>
+
+            <!-- 详细描述 -->
+            <div class="form-group">
+                <label for="content">详细描述 <span style="color: #d73a49;">*</span></label>
+                <textarea id="content" class="form-control" placeholder="请详细说明：
+1. 场景（你在做什么时遇到的）
+2. 问题/建议（具体需求）
+3. 期望效果" required></textarea>
+            </div>
+
+            <!-- 标签 -->
+            <div class="form-group">
+                <label>标签（可多选）</label>
+                <div class="labels-area">
+                    <div class="label-tag" data-label="UI/UX">UI/UX</div>
+                    <div class="label-tag" data-label="功能增强">功能增强</div>
+                    <div class="label-tag" data-label="性能">性能</div>
+                    <div class="label-tag" data-label="兼容性">兼容性</div>
+                    <div class="label-tag" data-label="其他">其他</div>
+                </div>
+            </div>
+
+            <!-- 附件 -->
+            <div class="form-group">
+                <label>附件（截图/文件，可选）</label>
+                <div class="attachment-upload">
+                    <input type="file" id="attachment" accept="image/*,.pdf,.txt">
+                    <span>点击或拖拽文件到这里上传</span>
+                    <p id="attachmentName" style="margin-top: 8px; color: #586069; font-size: 12px;">未选择文件</p >
+                </div>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="form-group">
+                <label for="contact">联系方式（可选，方便沟通）</label>
+                <input type="text" id="contact" class="form-control" placeholder="邮箱/手机号">
+            </div>
+
+            <!-- 提交按钮 -->
+            <button type="submit" class="submit-btn">提交</button>
+
+            <!-- 成功提示 -->
+            <div class="success-alert" id="successAlert">
+                提交成功！我们会尽快处理你的反馈～ <a href=" " style="color: #0366d6;">查看反馈列表</a >
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 1. 反馈类型选择
+        const typeBtns = document.querySelectorAll('.type-btn');
+        let selectedType = 'feature';
+        typeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedType = btn.dataset.type;
+            });
+        });
+
+        // 2. 标签选择
+        const labelTags = document.querySelectorAll('.label-tag');
+        const selectedLabels = [];
+        labelTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                const label = tag.dataset.label;
+                selectedLabels.includes(label) 
+                    ? selectedLabels.splice(selectedLabels.indexOf(label), 1)
+                    : selectedLabels.push(label);
+            });
+        });
+
+        // 3. 附件上传（适配Vercel Blob）
+        const attachmentInput = document.getElementById('attachment');
+        const attachmentName = document.getElementById('attachmentName');
+        let attachmentUrl = '';
+        attachmentInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            attachmentName.textContent = '上传中...';
+
+            try {
+                // 调用Vercel上传接口
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: file
+                });
+                const result = await response.json();
+                attachmentUrl = result.url;
+                attachmentName.textContent = `已选择：${file.name}`;
+            } catch (err) {
+                attachmentName.textContent = '上传失败，请重试';
+            }
+        });
+
+        // 4. 表单提交（调用Vercel接口）
+        const form = document.getElementById('feedbackForm');
+        const successAlert = document.getElementById('successAlert');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const contact = document.getElementById('contact').value;
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title,
+                        type: selectedType,
+                        content,
+                        labels: selectedLabels.length > 0 ? selectedLabels : ['其他'],
+                        attachment: attachmentUrl,
+                        contact: contact || '未填写'
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    successAlert.style.display = 'block';
+                    form.reset();
+                    attachmentName.textContent = '未选择文件';
+                } else {
+                    alert('提交失败：' + result.error);
+                }
+            } catch (err) {
+                alert('网络错误：' + err.message);
+            }
+        });
+
+        // 附件拖拽/点击交互
+        const uploadArea = document.querySelector('.attachment-upload');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#0366d6';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#e1e4e8';
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#e1e4e8';
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                attachmentInput.files = e.dataTransfer.files;
+                attachmentInput.dispatchEvent(new Event('change'));
+            }
+        });
+        uploadArea.addEventListener('click', () => attachmentInput.click());
+    </script>
+</body>
+</html>
